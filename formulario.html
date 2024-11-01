@@ -1,0 +1,93 @@
+<!-- inventario.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventario</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .form-container { max-width: 600px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+    input, select { display: block; margin: 10px 0; padding: 10px; width: 100%; }
+    button { padding: 10px; width: 100%; background-color: #007bff; color: white; border: none; cursor: pointer; }
+    table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+    table, th, td { border: 1px solid black; }
+    th, td { padding: 10px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Agregar Producto al Inventario</h2>
+    <input type="text" id="referencia" placeholder="Referencia">
+    <input type="number" id="cantidad" placeholder="Cantidad">
+    <input type="number" id="precio" placeholder="Precio">
+    <select id="talla">
+      <option value="S">S</option>
+      <option value="M">M</option>
+      <option value="L">L</option>
+      <option value="XL">XL</option>
+      <option value="XXL">XXL</option>
+      <option value="3XL">3XL</option>
+      <option value="4XL">4XL</option>
+    </select>
+    <button onclick="agregarProducto()">Agregar al Carrito</button>
+
+    <h3>Carrito</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Referencia</th>
+          <th>Cantidad</th>
+          <th>Precio</th>
+          <th>Talla</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="carrito"></tbody>
+    </table>
+    <h4>Total: $<span id="total">0</span></h4>
+    <!-- botones de eliminar y editar -->
+  </div>
+
+  <script>
+    let carrito = [];
+
+    function agregarProducto() {
+      const referencia = document.getElementById('referencia').value;
+      const cantidad = document.getElementById('cantidad').value;
+      const precio = document.getElementById('precio').value;
+      const talla = document.getElementById('talla').value;
+
+      const producto = { referencia, cantidad: parseInt(cantidad), precio: parseFloat(precio), talla };
+      carrito.push(producto);
+
+      actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+      const tbody = document.getElementById('carrito');
+      tbody.innerHTML = '';
+
+      let total = 0;
+      carrito.forEach(producto => {
+        const subtotal = producto.cantidad * producto.precio;
+        total += subtotal;
+
+        const fila = `
+          <tr>
+            <td>${producto.referencia}</td>
+            <td>${producto.cantidad}</td>
+            <td>${producto.precio}</td>
+            <td>${producto.talla}</td>
+            <td>${subtotal}</td>
+          </tr>
+        `;
+        tbody.innerHTML += fila;
+      });
+
+      document.getElementById('total').innerText = total.toFixed(2);
+    }
+  </script>
+  
+</body>
+</html>
